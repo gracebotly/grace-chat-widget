@@ -3,68 +3,372 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grace Bola AI Assistant</title>
+    <title>Grace Bola - AI Automation Assistant</title>
+    
+    <!-- N8N Chat CSS -->
     <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+    
     <style>
-        /* Minimal CSS for Notion compatibility */
+        /* Minimal Gray Brand Colors - Chatlio-inspired Design */
         :root {
-            --chat--color-primary: #8b5cf6;
-            --chat--color-secondary: #06b6d4;
-            --chat--toggle--size: 60px;
+            --chat--color-primary: #374151;
+            --chat--color-primary-shade-50: #4b5563;
+            --chat--color-primary-shade-100: #6b7280;
+            --chat--color-secondary: #9ca3af;
+            --chat--color-secondary-shade-50: #6b7280;
+            --chat--color-white: #ffffff;
+            --chat--color-light: #f9fafb;
+            --chat--color-light-shade-50: #f3f4f6;
+            --chat--color-light-shade-100: #e5e7eb;
+            --chat--color-medium: #d1d5db;
+            --chat--color-dark: #111827;
+            --chat--color-disabled: #9ca3af;
+            --chat--color-typing: #6b7280;
+            --chat--spacing: 1rem;
+            --chat--border-radius: 16px;
+            --chat--transition-duration: 0.2s;
             --chat--window--width: 380px;
-            --chat--window--height: 500px;
+            --chat--window--height: 480px;
+            --chat--header-height: auto;
+            --chat--header--padding: 1.5rem 1.5rem 1.2rem 1.5rem;
+            --chat--header--background: #374151;
+            --chat--header--color: var(--chat--color-white);
+            --chat--header--border-top: none;
+            --chat--header--border-bottom: 1px solid #e5e7eb;
+            --chat--heading--font-size: 1.25rem;
+            --chat--subtitle--font-size: 0.875rem;
+            --chat--subtitle--line-height: 1.4;
+            --chat--textarea--height: 44px;
+            --chat--message--font-size: 0.925rem;
+            --chat--message--padding: 0.75rem 1rem;
+            --chat--message--border-radius: 18px;
+            --chat--message-line-height: 1.5;
+            --chat--message--bot--background: #f3f4f6;
+            --chat--message--bot--color: #374151;
+            --chat--message--bot--border: 1px solid #e5e7eb;
+            --chat--message--user--background: #374151;
+            --chat--message--user--color: var(--chat--color-white);
+            --chat--message--user--border: none;
+            --chat--message--pre--background: rgba(0, 0, 0, 0.05);
+            --chat--toggle--background: #374151;
+            --chat--toggle--hover--background: #4b5563;
+            --chat--toggle--active--background: #6b7280;
+            --chat--toggle--color: var(--chat--color-white);
+            --chat--toggle--size: 56px;
         }
-        
+
+        /* Clean, simple floating button - Chatlio style */
+        .n8n-chat .chat-toggle {
+            box-shadow: 0 4px 12px rgba(55, 65, 81, 0.15);
+            transition: all 0.2s ease;
+            border: none !important;
+            position: fixed !important;
+            bottom: 24px !important;
+            right: 24px !important;
+            z-index: 9999 !important;
+            background: #374151 !important;
+            border-radius: 50% !important;
+        }
+
+        .n8n-chat .chat-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(55, 65, 81, 0.25);
+            background: #4b5563 !important;
+        }
+
+        .n8n-chat .chat-toggle:active {
+            transform: translateY(0px);
+            background: #6b7280 !important;
+        }
+
+        /* Clean chat window - Chatlio inspired */
+        .n8n-chat .chat-window {
+            position: fixed !important;
+            bottom: 92px !important;
+            right: 24px !important;
+            z-index: 9998 !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-radius: var(--chat--border-radius) !important;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            background: white;
+        }
+
+        /* Simple, clean header */
+        .n8n-chat .chat-header {
+            background: #374151 !important;
+            border-radius: var(--chat--border-radius) var(--chat--border-radius) 0 0 !important;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .n8n-chat .chat-header .title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 2px;
+        }
+
+        .n8n-chat .chat-header .subtitle {
+            opacity: 0.9;
+            font-size: 0.875rem;
+            font-weight: 400;
+        }
+
+        /* Clean input area */
+        .n8n-chat .chat-input-container {
+            padding: 1rem 1.5rem;
+            background: var(--chat--color-white);
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .n8n-chat .chat-input {
+            border-radius: 22px !important;
+            border: 1px solid #d1d5db !important;
+            padding: 0.75rem 1rem !important;
+            font-size: 0.925rem !important;
+            transition: all 0.2s ease;
+            flex: 1;
+        }
+
+        .n8n-chat .chat-input:focus {
+            border-color: #374151 !important;
+            box-shadow: 0 0 0 3px rgba(55, 65, 81, 0.1) !important;
+            outline: none !important;
+        }
+
+        /* Simple send button */
+        .n8n-chat .chat-send-button {
+            background: #374151 !important;
+            border-radius: 50% !important;
+            width: 40px !important;
+            height: 40px !important;
+            border: none !important;
+            transition: all 0.2s ease !important;
+            flex-shrink: 0;
+        }
+
+        .n8n-chat .chat-send-button:hover {
+            background: #4b5563 !important;
+            transform: scale(1.05);
+        }
+
+        /* Clean message bubbles - Chatlio style */
+        .n8n-chat .chat-messages {
+            padding: 1.5rem;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .n8n-chat .chat-message {
+            margin-bottom: 1rem !important;
+            animation: fadeInUp 0.3s ease-out;
+            max-width: 85%;
+        }
+
+        .n8n-chat .chat-message.user {
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .n8n-chat .chat-message.bot {
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .n8n-chat .chat-message .message-content {
+            display: inline-block;
+            padding: 0.75rem 1rem;
+            border-radius: 18px;
+            font-size: 0.925rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .n8n-chat .chat-message.bot .message-content {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+
+        .n8n-chat .chat-message.user .message-content {
+            background: #374151;
+            color: white;
+            border: none;
+        }
+
+        /* Smooth message animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Simple scrollbar */
+        .n8n-chat .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .n8n-chat .chat-messages::-webkit-scrollbar-track {
+            background: #f3f4f6;
+            border-radius: 2px;
+        }
+
+        .n8n-chat .chat-messages::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 2px;
+        }
+
+        .n8n-chat .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            :root {
+                --chat--window--width: calc(100vw - 32px);
+                --chat--window--height: calc(100vh - 120px);
+            }
+
+            .n8n-chat .chat-window {
+                bottom: 80px !important;
+                right: 16px !important;
+                left: 16px !important;
+                width: calc(100vw - 32px) !important;
+            }
+
+            .n8n-chat .chat-toggle {
+                bottom: 20px !important;
+                right: 20px !important;
+                --chat--toggle--size: 52px;
+            }
+        }
+
+        /* Base styling */
         body {
             margin: 0;
             padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
             background: transparent;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
         }
-        
-        /* Simple floating button */
-        .n8n-chat .chat-toggle {
-            position: fixed !important;
-            bottom: 20px !important;
-            right: 20px !important;
-            z-index: 999999 !important;
-            background: linear-gradient(135deg, #8b5cf6, #06b6d4) !important;
-            border: none !important;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important;
+
+        /* Ensure the chat widget is always visible */
+        #n8n-chat-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
         }
-        
-        /* Simple chat window */
-        .n8n-chat .chat-window {
-            position: fixed !important;
-            bottom: 90px !important;
-            right: 20px !important;
-            z-index: 999998 !important;
-            border-radius: 12px !important;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+
+        #n8n-chat-container * {
+            pointer-events: auto;
+        }
+
+        /* Typing indicator */
+        .n8n-chat .chat-typing {
+            display: flex;
+            justify-content: flex-start;
+            padding: 1rem 1.5rem 0;
+        }
+
+        .n8n-chat .chat-typing::after {
+            content: "Grace is typing...";
+            font-style: italic;
+            color: #6b7280;
+            font-size: 0.875rem;
         }
     </style>
 </head>
 <body>
-    <div id="n8n-chat"></div>
-    
+    <!-- Chat Widget Container -->
+    <div id="n8n-chat-container">
+        <div id="n8n-chat"></div>
+    </div>
+
+    <!-- N8N Chat JavaScript -->
     <script type="module">
         import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
         
+        // Initialize the chat widget with minimal gray design
         createChat({
+            // Your actual webhook URL from the n8n workflow
             webhookUrl: 'https://primary-production-12ff.up.railway.app/webhook/upwork-capability-validation/chat',
+            
+            // Configuration options
+            webhookConfig: {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            },
+            
+            // Target element
             target: '#n8n-chat',
+            
+            // Use window mode for floating chat bubble
             mode: 'window',
+            
+            // Chat configuration
+            chatInputKey: 'chatInput',
+            chatSessionKey: 'sessionId',
+            loadPreviousSession: true,
+            
+            // Hide welcome screen for cleaner appearance
             showWelcomeScreen: false,
+            
+            // Default language
+            defaultLanguage: 'en',
+            
+            // Custom initial messages matching your n8n workflow EXACTLY
             initialMessages: [
                 'Hi! I\'m Grace\'s AI assistant I demonstrate automation capabilities for Upwork prospects.'
             ],
+            
+            // Custom text and labels (clean, professional)
             i18n: {
                 en: {
                     title: 'Grace Bola AI Assistant',
-                    subtitle: 'Live automation demo',
-                    inputPlaceholder: 'Ask about automation capabilities...',
+                    subtitle: 'Live demonstration of automation expertise for Upwork',
+                    footer: 'Certified n8n Implementation Partner',
+                    getStarted: 'Start Conversation',
+                    inputPlaceholder: 'Ask about automation capabilities, technical implementation, or project process...',
                 },
+            },
+            
+            // Disable streaming for simplicity
+            enableStreaming: false,
+            
+            // Additional metadata sent to your n8n workflow
+            metadata: {
+                source: 'notion_landing_page',
+                page_type: 'upwork_validation',
+                visitor_id: 'notion_' + Date.now(),
+                timestamp: new Date().toISOString()
             }
+        });
+
+        // Success logging
+        console.log('Grace Bola AI Assistant - Minimal Gray Design loaded successfully');
+        
+        // Optional: Add custom event listeners for analytics
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Grace Bola Chat Widget ready for Upwork prospect validation');
+        });
+
+        // Add some basic error handling
+        window.addEventListener('error', function(e) {
+            console.error('Chat widget error:', e.error);
         });
     </script>
 </body>
