@@ -9,40 +9,35 @@
         :root {
             --chat--color-primary: #374151;
             --chat--color-primary-shade-50: #4b5563;
-            --chat--toggle--size: 50px;
-            --chat--window--width: 100%;
-            --chat--window--height: 100%;
-        }
-
-        * {
-            box-sizing: border-box;
+            --chat--color-primary-shade-100: #6b7280;
+            --chat--toggle--size: 56px;
+            --chat--window--width: 380px;
+            --chat--window--height: 480px;
         }
 
         body {
             margin: 0;
             padding: 0;
-            background: #f8fafc;
+            background: transparent;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             height: 100vh;
             position: relative;
-            overflow: hidden;
         }
 
-        /* Mobile-first call-to-action overlay */
+        /* Clear call-to-action overlay */
         .chat-cta-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: rgba(249, 250, 251, 0.95);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 9997;
             transition: all 0.3s ease;
-            padding: 1rem;
         }
 
         .chat-cta-overlay.hidden {
@@ -52,119 +47,106 @@
 
         .cta-content {
             text-align: center;
-            max-width: 280px;
-            width: 100%;
-        }
-
-        .cta-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.8rem;
-            display: block;
+            max-width: 300px;
+            padding: 2rem;
         }
 
         .cta-title {
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: 600;
             color: #374151;
             margin-bottom: 0.5rem;
-            line-height: 1.3;
         }
 
         .cta-subtitle {
-            font-size: 0.8rem;
+            font-size: 0.95rem;
             color: #6b7280;
-            margin-bottom: 1.5rem;
-            line-height: 1.4;
+            margin-bottom: 2rem;
+            line-height: 1.5;
         }
 
         .cta-button {
-            background: linear-gradient(135deg, #374151, #4b5563);
+            background: #374151;
             color: white;
             border: none;
-            padding: 0.9rem 1.8rem;
-            border-radius: 25px;
-            font-size: 0.95rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(55, 65, 81, 0.25);
+            box-shadow: 0 4px 12px rgba(55, 65, 81, 0.3);
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            width: 100%;
-            max-width: 200px;
-            justify-content: center;
         }
 
         .cta-button:hover {
-            background: linear-gradient(135deg, #4b5563, #6b7280);
+            background: #4b5563;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(55, 65, 81, 0.35);
+            box-shadow: 0 8px 20px rgba(55, 65, 81, 0.4);
         }
 
-        .cta-button:active {
-            transform: translateY(0);
+        .chat-icon {
+            font-size: 1.2rem;
         }
 
-        /* Mobile-optimized chat widget */
-        .n8n-chat {
-            width: 100% !important;
-            height: 100% !important;
-        }
-
+        /* Chat widget positioning */
         .n8n-chat .chat-toggle {
-            display: none !important;
+            position: fixed !important;
+            bottom: 24px !important;
+            right: 24px !important;
+            z-index: 9999 !important;
+            background: #374151 !important;
+            border: none !important;
+            box-shadow: 0 4px 12px rgba(55, 65, 81, 0.2) !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .n8n-chat .chat-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(55, 65, 81, 0.3) !important;
         }
 
         .n8n-chat .chat-window {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            max-width: none !important;
-            max-height: none !important;
-            border-radius: 0 !important;
-            border: none !important;
-            box-shadow: none !important;
-            background: white !important;
+            position: fixed !important;
+            bottom: 92px !important;
+            right: 24px !important;
+            z-index: 9998 !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+            border-radius: 12px !important;
+            border: 1px solid #e5e7eb !important;
         }
 
-        /* Compact mobile header */
+        /* Chat header */
         .n8n-chat .chat-header {
-            background: linear-gradient(135deg, #374151, #4b5563) !important;
+            background: #374151 !important;
             color: white !important;
-            padding: 0.8rem 1rem !important;
-            border-radius: 0 !important;
-            border-bottom: 1px solid #e5e7eb !important;
-            text-align: center !important;
+            padding: 1rem !important;
+            border-radius: 12px 12px 0 0 !important;
         }
 
         .n8n-chat .chat-header .title {
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             margin: 0;
-            color: white !important;
         }
 
         .n8n-chat .chat-header .subtitle {
             display: none !important;
         }
 
-        /* Optimized messages area for mobile */
+        /* Messages */
         .n8n-chat .chat-messages {
-            padding: 0.8rem !important;
-            height: calc(100% - 110px) !important;
+            padding: 1rem !important;
+            height: 300px !important;
             overflow-y: auto !important;
             background: white !important;
-            font-size: 0.85rem !important;
         }
 
         .n8n-chat .chat-message {
-            margin-bottom: 0.8rem !important;
-            max-width: 90% !important;
+            margin-bottom: 1rem !important;
+            max-width: 85% !important;
         }
 
         .n8n-chat .chat-message.user {
@@ -176,156 +158,96 @@
         }
 
         .n8n-chat .chat-message .message-content {
-            padding: 0.6rem 0.8rem !important;
-            border-radius: 16px !important;
-            font-size: 0.85rem !important;
-            line-height: 1.4 !important;
-            word-wrap: break-word !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 18px !important;
+            font-size: 0.9rem !important;
+            line-height: 1.5 !important;
         }
 
         .n8n-chat .chat-message.bot .message-content {
-            background: #f8fafc !important;
+            background: #f3f4f6 !important;
             color: #374151 !important;
             border: 1px solid #e5e7eb !important;
         }
 
         .n8n-chat .chat-message.user .message-content {
-            background: linear-gradient(135deg, #374151, #4b5563) !important;
+            background: #374151 !important;
             color: white !important;
-            border: none !important;
         }
 
-        /* Compact mobile input */
+        /* Input area */
         .n8n-chat .chat-input-container {
-            padding: 0.8rem !important;
+            padding: 1rem !important;
             background: white !important;
             border-top: 1px solid #e5e7eb !important;
             display: flex !important;
             align-items: center !important;
-            gap: 0.6rem !important;
+            gap: 0.75rem !important;
         }
 
         .n8n-chat .chat-input {
             flex: 1 !important;
             border: 1px solid #d1d5db !important;
-            border-radius: 18px !important;
-            padding: 0.6rem 0.8rem !important;
-            font-size: 0.85rem !important;
-            background: #f8fafc !important;
+            border-radius: 20px !important;
+            padding: 0.75rem 1rem !important;
+            font-size: 0.9rem !important;
         }
 
         .n8n-chat .chat-input:focus {
             border-color: #374151 !important;
-            box-shadow: 0 0 0 2px rgba(55, 65, 81, 0.1) !important;
+            box-shadow: 0 0 0 3px rgba(55, 65, 81, 0.1) !important;
             outline: none !important;
-            background: white !important;
         }
 
         .n8n-chat .chat-send-button {
-            background: linear-gradient(135deg, #374151, #4b5563) !important;
+            background: #374151 !important;
             border: none !important;
             border-radius: 50% !important;
-            width: 32px !important;
-            height: 32px !important;
+            width: 36px !important;
+            height: 36px !important;
             color: white !important;
-            cursor: pointer !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            font-size: 0.8rem !important;
         }
 
         .n8n-chat .chat-send-button:hover {
-            background: linear-gradient(135deg, #4b5563, #6b7280) !important;
+            background: #4b5563 !important;
         }
 
-        /* Custom scrollbar for mobile */
-        .n8n-chat .chat-messages::-webkit-scrollbar {
-            width: 3px;
-        }
-
-        .n8n-chat .chat-messages::-webkit-scrollbar-track {
-            background: #f8fafc;
-        }
-
-        .n8n-chat .chat-messages::-webkit-scrollbar-thumb {
-            background: #d1d5db;
-            border-radius: 2px;
-        }
-
-        /* Animation for messages */
-        .n8n-chat .chat-message {
-            animation: slideInUp 0.3s ease-out;
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Touch-friendly styles */
-        .cta-button,
-        .n8n-chat .chat-input,
-        .n8n-chat .chat-send-button {
-            -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 400px) {
+        /* Mobile responsive */
+        @media (max-width: 768px) {
             .cta-title {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
             
             .cta-subtitle {
-                font-size: 0.75rem;
+                font-size: 0.9rem;
             }
             
             .cta-button {
-                padding: 0.8rem 1.5rem;
-                font-size: 0.9rem;
+                padding: 0.9rem 1.5rem;
+                font-size: 1rem;
             }
             
-            .n8n-chat .chat-messages {
-                padding: 0.6rem !important;
-            }
-            
-            .n8n-chat .chat-input-container {
-                padding: 0.6rem !important;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .cta-content {
-                max-width: 320px;
-            }
-            
-            .cta-title {
-                font-size: 1.2rem;
-            }
-            
-            .cta-subtitle {
-                font-size: 0.9rem;
+            .n8n-chat .chat-window {
+                bottom: 80px !important;
+                right: 16px !important;
+                left: 16px !important;
+                width: calc(100vw - 32px) !important;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Mobile-optimized call-to-action overlay -->
+    <!-- Clear Call-to-Action Overlay -->
     <div class="chat-cta-overlay" id="ctaOverlay">
         <div class="cta-content">
-            <span class="cta-icon">🚀</span>
-            <div class="cta-title">Test AI Assistant</div>
+            <div class="cta-title">💬 Test the AI Assistant</div>
             <div class="cta-subtitle">
-                Ask about automation capabilities, pricing, or implementation process
+                See automation capabilities in action.<br>
+                Ask about implementation, pricing, or process.
             </div>
             <button class="cta-button" onclick="startChat()">
-                Start Chat
+                <span class="chat-icon">🚀</span>
+                Start Conversation
             </button>
         </div>
     </div>
@@ -336,11 +258,11 @@
     <script type="module">
         import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
         
-        // Initialize mobile-optimized chat
+        // Initialize chat widget
         createChat({
             webhookUrl: 'https://primary-production-12ff.up.railway.app/webhook/upwork-capability-validation/chat',
             target: '#n8n-chat',
-            mode: 'fullscreen',
+            mode: 'window',
             showWelcomeScreen: false,
             initialMessages: [
                 'Hi! I\'m Grace\'s AI assistant. What can I help you with today?'
@@ -349,47 +271,31 @@
                 en: {
                     title: 'Grace Bola AI Assistant',
                     subtitle: '',
-                    inputPlaceholder: 'Ask about capabilities...',
+                    inputPlaceholder: 'Ask about capabilities, implementation, or process...',
                 },
             }
         });
 
         // Function to start chat
         window.startChat = function() {
-            const overlay = document.getElementById('ctaOverlay');
-            overlay.classList.add('hidden');
+            // Hide the overlay
+            document.getElementById('ctaOverlay').classList.add('hidden');
             
-            // Focus on input after chat opens
+            // Trigger the chat toggle
             setTimeout(() => {
-                const input = document.querySelector('.n8n-chat .chat-input');
-                if (input) {
-                    input.focus();
+                const chatToggle = document.querySelector('.n8n-chat .chat-toggle');
+                if (chatToggle) {
+                    chatToggle.click();
                 }
-            }, 500);
+            }, 300);
         };
 
-        // Add touch event handling for better mobile experience
-        document.addEventListener('DOMContentLoaded', function() {
-            const ctaButton = document.querySelector('.cta-button');
-            if (ctaButton) {
-                ctaButton.addEventListener('touchstart', function() {
-                    this.style.transform = 'translateY(1px)';
-                });
-                
-                ctaButton.addEventListener('touchend', function() {
-                    this.style.transform = 'translateY(-2px)';
-                });
+        // Show overlay when chat is closed
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.n8n-chat .chat-toggle')) {
+                // If chat is being opened, hide overlay
+                document.getElementById('ctaOverlay').classList.add('hidden');
             }
-        });
-
-        // Prevent zoom on input focus (iOS)
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('input[type="text"], textarea');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.style.fontSize = '16px';
-                });
-            });
         });
     </script>
 </body>
