@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grace Bola - AI Automation Assistant</title>
+    
+    <!-- N8N Chat CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+    
+    <style>
+        /* Custom CSS Variables - Grace Bola Branding (Updated to match Notion page) */
+        :root {
+            --chat--color-primary: #8b5cf6;
+            --chat--color-primary-shade-50: #7c3aed;
+            --chat--color-primary-shade-100: #6d28d9;
+            --chat--color-secondary: #06b6d4;
+            --chat--color-secondary-shade-50: #0891b2;
+            --chat--color-white: #ffffff;
+            --chat--color-light: #f8fafc;
+            --chat--color-light-shade-50: #f1f5f9;
+            --chat--color-light-shade-100: #e2e8f0;
+            --chat--color-medium: #cbd5e1;
+            --chat--color-dark: #1e293b;
+            --chat--color-disabled: #94a3b8;
+            --chat--color-typing: #64748b;
+            --chat--spacing: 1rem;
+            --chat--border-radius: 16px;
+            --chat--transition-duration: 0.3s;
+            --chat--window--width: 400px;
+            --chat--window--height: 520px;
+            --chat--header-height: auto;
+            --chat--header--padding: 1.5rem 1rem 1rem 1rem;
+            --chat--header--background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            --chat--header--color: var(--chat--color-white);
+            --chat--header--border-top: none;
+            --chat--header--border-bottom: none;
+            --chat--heading--font-size: 1.3em;
+            --chat--subtitle--font-size: 0.82rem;
+            --chat--subtitle--line-height: 1.4;
+            --chat--textarea--height: 48px;
+            --chat--message--font-size: 0.95rem;
+            --chat--message--padding: 0.8rem 1rem;
+            --chat--message--border-radius: 20px;
+            --chat--message-line-height: 1.5;
+            --chat--message--bot--background: #f8fafc;
+            --chat--message--bot--color: var(--chat--color-dark);
+            --chat--message--bot--border: 1px solid #e1e7ef;
+            --chat--message--user--background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            --chat--message--user--color: var(--chat--color-white);
+            --chat--message--user--border: none;
+            --chat--message--pre--background: rgba(0, 0, 0, 0.05);
+            --chat--toggle--background: var(--chat--color-primary);
+            --chat--toggle--hover--background: var(--chat--color-primary-shade-50);
+            --chat--toggle--active--background: var(--chat--color-primary-shade-100);
+            --chat--toggle--color: var(--chat--color-white);
+            --chat--toggle--size: 64px;
+        }
+
+        /* Add a subtle pulsing animation to the toggle when idle */
+        .n8n-chat .chat-toggle {
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none !important;
+            position: fixed !important;
+            bottom: 28px !important;
+            right: 28px !important;
+            z-index: 9999 !important;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4) !important;
+            animation: gentlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes gentlePulse {
+            0%, 100% { 
+                box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 12px 35px rgba(139, 92, 246, 0.5);
+                transform: scale(1.02);
+            }
+        }
+
+        .n8n-chat .chat-toggle:hover {
+            transform: translateY(-3px) scale(1.08);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.6);
+            animation: none; /* Stop pulsing on hover */
+        }
+
+        .n8n-chat .chat-toggle:active {
+            transform: translateY(-1px) scale(1.05);
+            animation: none; /* Stop pulsing on click */
+        }
+
+        /* Chat Window Styling */
+        .n8n-chat .chat-window {
+            position: fixed !important;
+            bottom: 110px !important;
+            right: 28px !important;
+            z-index: 9998 !important;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+            border-radius: var(--chat--border-radius) !important;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            background: white;
+            backdrop-filter: blur(20px);
+        }
+
+        /* Header Styling */
+        .n8n-chat .chat-header {
+            background: var(--chat--header--background) !important;
+            border-radius: var(--chat--border-radius) var(--chat--border-radius) 0 0 !important;
+            text-align: center;
+        }
+
+        .n8n-chat .chat-header .title {
+            font-weight: 600;
+            font-size: 1.4em;
+        }
+
+        .n8n-chat .chat-header .subtitle {
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        /* Input Area Styling */
+        .n8n-chat .chat-input-container {
+            padding: 1.2rem;
+            background: var(--chat--color-white);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .n8n-chat .chat-input {
+            border-radius: 28px !important;
+            border: 2px solid #e2e8f0 !important;
+            padding: 0.8rem 1.2rem !important;
+            font-size: 0.95rem !important;
+            transition: all 0.2s ease;
+        }
+
+        .n8n-chat .chat-input:focus {
+            border-color: var(--chat--color-primary) !important;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1) !important;
+            outline: none !important;
+        }
+
+        /* Send Button Styling */
+        .n8n-chat .chat-send-button {
+            background: var(--chat--color-primary) !important;
+            border-radius: 50% !important;
+            width: 44px !important;
+            height: 44px !important;
+            border: none !important;
+            margin-left: 0.8rem !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .n8n-chat .chat-send-button:hover {
+            background: var(--chat--color-primary-shade-50) !important;
+            transform: scale(1.1);
+        }
+
+        /* Messages Styling */
+        .n8n-chat .chat-messages {
+            padding: 1.2rem;
+            max-height: 360px;
+            overflow-y: auto;
+        }
+
+        .n8n-chat .chat-message {
+            margin-bottom: 1.2rem !important;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        .n8n-chat .chat-message.user {
+            text-align: right;
+        }
+
+        .n8n-chat .chat-message.bot {
+            text-align: left;
+        }
+
+        /* Animation for new messages */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Professional scrollbar */
+        .n8n-chat .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .n8n-chat .chat-messages::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        .n8n-chat .chat-messages::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .n8n-chat .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            :root {
+                --chat--window--width: calc(100vw - 32px);
+                --chat--window--height: calc(100vh - 120px);
+            }
+
+            .n8n-chat .chat-window {
+                bottom: 90px !important;
+                right: 16px !important;
+                left: 16px !important;
+                width: calc(100vw - 32px) !important;
+            }
+
+            .n8n-chat .chat-toggle {
+                bottom: 20px !important;
+                right: 20px !important;
+                --chat--toggle--size: 56px;
+            }
+        }
+
+        /* Base styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: transparent;
+            min-height: 100vh;
+        }
+
+        /* Ensure the chat widget is always visible */
+        #n8n-chat-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        #n8n-chat-container * {
+            pointer-events: auto;
+        }
+
+        /* Loading animation */
+        .n8n-chat .chat-loading {
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .n8n-chat .chat-loading::after {
+            content: "Grace is typing...";
+            font-style: italic;
+            color: #64748b;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Chat Widget Container -->
+    <div id="n8n-chat-container">
+        <div id="n8n-chat"></div>
+    </div>
+
+    <!-- N8N Chat JavaScript -->
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+        
+        // Initialize the chat widget
+        createChat({
+            // Your actual webhook URL from the n8n workflow
+            webhookUrl: 'https://primary-production-12ff.up.railway.app/webhook/upwork-capability-validation/chat',
+            
+            // Configuration options
+            webhookConfig: {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            },
+            
+            // Target element
+            target: '#n8n-chat',
+            
+            // Use window mode for floating chat bubble
+            mode: 'window',
+            
+            // Chat configuration
+            chatInputKey: 'chatInput',
+            chatSessionKey: 'sessionId',
+            loadPreviousSession: true,
+            
+            // Hide welcome screen for cleaner appearance
+            showWelcomeScreen: false,
+            
+            // Default language
+            defaultLanguage: 'en',
+            
+            // Custom initial messages matching your n8n workflow EXACTLY
+            initialMessages: [
+                'Hi! I\'m Grace\'s AI assistant I demonstrate automation capabilities for Upwork prospects.'
+            ],
+            
+            // Custom text and labels (matching Grace's branding)
+            i18n: {
+                en: {
+                    title: '✨ Grace Bola AI Assistant',
+                    subtitle: 'Live demonstration of automation expertise for Upwork',
+                    footer: 'Certified n8n Implementation Partner',
+                    getStarted: 'Start Conversation',
+                    inputPlaceholder: 'Ask about automation capabilities, technical implementation, or project process...',
+                },
+            },
+            
+            // Enable streaming for better UX (if configured in n8n)
+            enableStreaming: false,
+            
+            // Additional metadata sent to your n8n workflow
+            metadata: {
+                source: 'notion_landing_page',
+                page_type: 'upwork_validation',
+                visitor_id: 'notion_' + Date.now(),
+                timestamp: new Date().toISOString()
+            }
+        });
+
+        // Success logging
+        console.log('Grace Bola AI Assistant - Chat Widget initialized successfully');
+        
+        // Optional: Add custom event listeners for analytics
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Grace Bola Chat Widget ready for Upwork prospect validation');
+        });
+
+        // Add some basic error handling
+        window.addEventListener('error', function(e) {
+            console.error('Chat widget error:', e.error);
+        });
+    </script>
+</body>
+</html>
